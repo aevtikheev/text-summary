@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "text_summary"
+version = "0.1.0"
+description = ""
+authors = ["aevtikheev <eft000@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "0.63.0"
+uvicorn = "0.13.4"
+asyncpg = "0.22.0"
+tortoise-orm = "0.16.21"
+
+[tool.poetry.dev-dependencies]
+pytest = "6.2.2"
+requests = "2.25.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
