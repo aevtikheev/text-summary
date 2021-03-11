@@ -1,5 +1,7 @@
 FROM python:3.9.2-slim-buster
 
+EXPOSE 8000
+
 WORKDIR /usr/src/app
 
 ENV PYTHONDONTWRITEBYTECODE 1
