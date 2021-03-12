@@ -78,11 +78,10 @@ def test_read_all_summaries(test_app_with_db, existing_summary):
     """
     summary_id, summary_url = existing_summary
 
-    response = test_app_with_db.get(f'/summaries/')
+    response = test_app_with_db.get('/summaries/')
     assert response.status_code == 200, f'Invalid response code: {response.status_code}'
 
     response_json = response.json()
     assert len(list(filter(lambda d: d["id"] == summary_id, response_json))) == 1, (
         'Existing summary is not present in the result.'
     )
-

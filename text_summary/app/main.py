@@ -26,5 +26,5 @@ async def startup_event() -> None:
 
 
 @app.on_event('shutdown')
-async def startup_event() -> None:
+async def shutdown_event() -> None:
     logger.info('Shutting down...')
