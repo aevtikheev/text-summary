@@ -25,8 +25,8 @@ jobs:
           docker build \
             --cache-from ${{ env.IMAGE }}:latest \
             --tag ${{ env.IMAGE }}:latest \
-            --file ./project/Dockerfile.prod \
-            "./project"
+            --file ./text_summary/Dockerfile.prod \
+            "./text_summary"
       - name: Push image
         run: |
           docker push ${{ env.IMAGE }}:latest
@@ -50,23 +50,23 @@ jobs:
           docker build \
             --cache-from ${{ env.IMAGE }}:latest \
             --tag ${{ env.IMAGE }}:latest \
-            --file ./project/Dockerfile.prod \
-            "./project"
+            --file ./text_summary/Dockerfile.prod \
+            "./text_summary"
       - name: Run container
         run: |
           docker run \
             -d \
-            --name fastapi-tdd \
+            --name text_summary \
             -e PORT=8765 \
             -e ENVIRONMENT=dev \
             -e DATABASE_TEST_URL=sqlite://sqlite.db \
             -p 5003:8765 \
             ${{ env.IMAGE }}:latest
       - name: Pytest
-        run: docker exec fastapi-tdd python -m pytest .
+        run: docker exec text_summary python -m pytest .
       - name: Flake8
-        run: docker exec fastapi-tdd python -m flake8 .
+        run: docker exec text_summary python -m flake8 .
       - name: Black
-        run: docker exec fastapi-tdd python -m black . --check
+        run: docker exec text_summary python -m black . --check
       - name: isort
-        run: docker exec fastapi-tdd python -m isort . --check-only
+        run: docker exec text_summary python -m isort . --check-only
