@@ -4,11 +4,11 @@ from app.schemas import SummaryPayloadSchema
 from app.models import TextSummary
 
 
-async def create(payload: SummaryPayloadSchema) -> int:
+async def create(payload: SummaryPayloadSchema) -> TextSummary:
     summary = TextSummary(url=payload.url, summary='dummy summary')
     await summary.save()
 
-    return summary.id
+    return summary
 
 
 async def read(id_: int) -> Optional[dict]:
@@ -19,6 +19,7 @@ async def read(id_: int) -> Optional[dict]:
 
 async def read_all() -> List:
     summaries = await TextSummary.all().values()
+
     return summaries
 
 

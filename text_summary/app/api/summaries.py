@@ -3,19 +3,14 @@ from typing import List
 from fastapi import APIRouter, HTTPException
 
 from app.api import crud
-from app.schemas import SummarySchema, SummaryPayloadSchema, SummaryResponseSchema
+from app.schemas import SummarySchema, SummaryPayloadSchema
 
 router = APIRouter()
 
 
-@router.post('/', response_model=SummaryResponseSchema, status_code=201)
+@router.post('/', response_model=SummarySchema, status_code=201)
 async def create_summary(payload: SummaryPayloadSchema):
-    summary_id = await crud.create(payload)
-
-    return {
-        'id': summary_id,
-        'url': payload.url,
-    }
+    return await crud.create(payload)
 
 
 @router.get('/{id_}/', response_model=SummarySchema)
