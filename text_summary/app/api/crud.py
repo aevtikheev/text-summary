@@ -20,3 +20,7 @@ async def read(id_: int) -> Optional[dict]:
 async def read_all() -> List:
     summaries = await TextSummary.all().values()
     return summaries
+
+
+async def delete(id_: int) -> Optional[dict]:
+    return await TextSummary.filter(id=id_).first().delete()

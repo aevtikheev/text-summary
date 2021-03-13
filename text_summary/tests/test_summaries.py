@@ -96,3 +96,27 @@ def test_read_all_summaries(test_app_with_db, existing_summary):
     assert len(list(filter(lambda d: d["id"] == summary_id, response_json))) == 1, (
         'Existing summary is not present in the result.'
     )
+
+
+def test_delete_summary(test_app_with_db, existing_summary):
+    """
+    Delete summary.
+
+    Check that status code is 200.
+    """
+    summary_id, summary_url = existing_summary
+
+    response = test_app_with_db.delete(f'/summaries/{summary_id}/')
+    assert response.status_code == 200, f'Invalid response code: {response.status_code}'
+
+
+@pytest.mark.negative
+def test_delete_nonexistent_summary(test_app_with_db):
+    """
+    Try to delete a summary by nonexistent ID.
+
+    Check that status code is 404 and error details are provided.
+    """
+    response = test_app_with_db.delete('/summaries/9999999/')
+    assert response.status_code == 404, f'Invalid response code: {response.status_code}'
+    assert response.json()["detail"], 'Details about the error are not provided'
