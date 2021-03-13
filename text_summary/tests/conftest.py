@@ -44,7 +44,7 @@ def test_app_with_db():
         yield test_client
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='function')
 def existing_summary(test_app_with_db):
     summary_url = 'http://example.com'
 

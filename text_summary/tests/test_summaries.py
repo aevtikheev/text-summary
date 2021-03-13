@@ -60,13 +60,24 @@ def test_read_summary(test_app_with_db, existing_summary):
 @pytest.mark.negative
 def test_read_nonexistent_summary(test_app_with_db):
     """
-    Get the summary by ID.
+    Try to get a summary by nonexistent ID.
 
-    Check that status code is 200, id and url fields are correct
-     and summary and created_at fields are present.
+    Check that status code is 404 and error details are provided.
     """
     response = test_app_with_db.get('/summaries/9999999/')
     assert response.status_code == 404, f'Invalid response code: {response.status_code}'
+    assert response.json()["detail"], 'Details about the error are not provided'
+
+
+@pytest.mark.negative
+def test_read_invalid_id_summary(test_app_with_db):
+    """
+    Try to get a summary by invalid ID.
+
+    Check that status code is 422 and error details are provided.
+    """
+    response = test_app_with_db.get('/summaries/abc/')
+    assert response.status_code == 422, f'Invalid response code: {response.status_code}'
     assert response.json()["detail"], 'Details about the error are not provided'
 
 
