@@ -66,7 +66,3 @@ jobs:
         run: docker exec text_summary python -m pytest .
       - name: Flake8
         run: docker exec text_summary python -m flake8 .
-      - name: Black
-        run: docker exec text_summary python -m black . --check
-      - name: isort
-        run: docker exec text_summary python -m isort . --check-only
