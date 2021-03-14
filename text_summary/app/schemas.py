@@ -1,11 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, AnyHttpUrl
 from tortoise.contrib.pydantic import pydantic_model_creator
 
 from app.models import TextSummary
 
 
 class SummaryPayloadSchema(BaseModel):
-    url: str
+    url: AnyHttpUrl
 
 
 class SummaryUpdatePayloadSchema(SummaryPayloadSchema):
