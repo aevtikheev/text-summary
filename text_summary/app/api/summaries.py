@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, HTTPException
 
 from app.api import crud
-from app.schemas import SummarySchema, SummaryPayloadSchema
+from app.schemas import SummarySchema, SummaryPayloadSchema, SummaryUpdatePayloadSchema
 
 router = APIRouter()
 
@@ -27,7 +27,16 @@ async def read_all_summaries():
     return await crud.read_all()
 
 
-@router.delete("/{id_}/", response_model=SummarySchema)
+@router.put('/{id_}/', response_model=SummarySchema)
+async def read_all_summaries(id_: int, payload: SummaryUpdatePayloadSchema):
+    summary = await crud.update(id_, payload)
+
+    if summary is None:
+        raise HTTPException(status_code=404, detail='Summary not found')
+    return summary
+
+
+@router.delete('/{id_}/', response_model=SummarySchema)
 async def delete_summary(id_: int) -> SummarySchema:
     summary = await crud.read(id_)
     if not summary:

@@ -8,4 +8,8 @@ class SummaryPayloadSchema(BaseModel):
     url: str
 
 
+class SummaryUpdatePayloadSchema(SummaryPayloadSchema):
+    summary: str
+
+
 SummarySchema = pydantic_model_creator(TextSummary)
