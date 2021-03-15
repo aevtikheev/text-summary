@@ -1,16 +1,20 @@
 from typing import List
 
-from fastapi import APIRouter, HTTPException, Path
+from fastapi import APIRouter, BackgroundTasks, HTTPException, Path
 
 from app.api import crud
 from app.schemas import SummarySchema, SummaryPayloadSchema, SummaryUpdatePayloadSchema
+from app.summarizer import generate_summary
 
 router = APIRouter()
 
 
 @router.post('/', response_model=SummarySchema, status_code=201)
-async def create_summary(payload: SummaryPayloadSchema):
-    return await crud.create(payload)
+async def create_summary(payload: SummaryPayloadSchema, background_tasks: BackgroundTasks):
+    new_summary = await crud.create(payload)
+    background_tasks.add_task(generate_summary, new_summary.id, payload.url)
+
+    return new_summary
 
 
 @router.get('/{summary_id}/', response_model=SummarySchema)

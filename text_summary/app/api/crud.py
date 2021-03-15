@@ -5,7 +5,7 @@ from app.models import TextSummary
 
 
 async def create(payload: SummaryPayloadSchema) -> TextSummary:
-    summary = TextSummary(url=payload.url, summary='dummy summary')
+    summary = TextSummary(url=payload.url, summary='')
     await summary.save()
 
     return summary

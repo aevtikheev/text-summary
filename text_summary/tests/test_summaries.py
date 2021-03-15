@@ -35,7 +35,7 @@ def test_read_summary(test_app_with_db, existing_summary):
     response_json = response.json()
     assert response_json[ID_FIELD] == summary_id, f'Invalid id field: {response_json[ID_FIELD]}'
     assert response_json[URL_FIELD] == summary_url, f'Invalid url field: {response_json[URL_FIELD]}'
-    assert response_json.get(SUMMARY_FIELD), 'Missing or empty summary field'
+    assert SUMMARY_FIELD in response_json, 'Missing summary field'
     assert response_json.get(CREATED_AT_FIELD), 'Missing or empty created_at field'
 
 
@@ -86,7 +86,7 @@ def test_delete_summary(test_app_with_db, existing_summary):
     [{}, {URL_FIELD: 'invalid://url'}],
     ids=['empty payload', 'incorrect url'],
 )
-def test_create_summary_incorrect_payload(test_app_with_db, payload):
+def test_create_summary_incorrect_payload(test_app_with_db, payload, mocked_summarizer):
     response = test_app_with_db.post(f'{SUMMARIES_ENDPOINT}/', data=json.dumps({}))
 
     assert response.status_code == 422, f'Invalid response code: {response.status_code}'
