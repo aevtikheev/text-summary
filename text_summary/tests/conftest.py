@@ -19,7 +19,15 @@ def get_settings_override():
     return Settings(testing=1, database_url=os.getenv('DATABASE_TEST_URL'))
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
+def test_app():
+    app = create_application()
+    app.dependency_overrides[get_settings] = get_settings_override
+    with TestClient(app) as test_client:
+        yield test_client
+
+
+@pytest.fixture(scope='session')
 def test_app_with_db():
     app = create_application()
     app.dependency_overrides[get_settings] = get_settings_override

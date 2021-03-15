@@ -73,7 +73,7 @@ def test_update_summary(test_app_with_db, existing_summary):
 
 
 def test_delete_summary(test_app_with_db, existing_summary):
-    summary_id, summary_url = existing_summary
+    summary_id, _ = existing_summary
 
     response = test_app_with_db.delete(f'{SUMMARIES_ENDPOINT}/{summary_id}/')
 
@@ -112,7 +112,7 @@ def test_read_summary_incorrect_id(test_app_with_db, summary_id, response_code):
     [('abc', 422), ('0', 422), ('99999999', 404)],
     ids=['non-digit ID', 'zero ID', 'Nonexistent ID'],
 )
-def test_update_summary_incorrect_id(test_app_with_db, existing_summary, summary_id, response_code):
+def test_update_summary_incorrect_id(test_app_with_db, summary_id, response_code):
     response = test_app_with_db.put(
         f'{SUMMARIES_ENDPOINT}/{summary_id}/',
         data=json.dumps({URL_FIELD: 'http://example.com', SUMMARY_FIELD: 'updated_summary'}),
