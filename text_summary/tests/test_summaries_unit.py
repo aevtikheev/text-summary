@@ -38,7 +38,7 @@ MULTIPLE_SUMMARIES_DATA = [
 
 
 async def mock_create(payload):
-    return SUMMARY_DATA
+    return SUMMARY_DATA[ID_FIELD]
 
 
 async def mock_read(summary_id):
@@ -65,7 +65,6 @@ async def mock_delete(summary_id):
     return SUMMARY_DATA
 
 
-@pytest.mark.skip()
 def test_create_summary(test_app, monkeypatch, mocked_summarizer):
     summary_url = SUMMARY_DATA[URL_FIELD]
 

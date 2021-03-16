@@ -4,11 +4,11 @@ from app.schemas import SummaryPayloadSchema, SummaryUpdatePayloadSchema
 from app.models import TextSummary
 
 
-async def create(payload: SummaryPayloadSchema) -> TextSummary:
+async def create(payload: SummaryPayloadSchema) -> int:
     summary = TextSummary(url=payload.url, summary='')
     await summary.save()
 
-    return summary
+    return summary.id
 
 
 async def read(id_: int) -> Optional[dict]:
