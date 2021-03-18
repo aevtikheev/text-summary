@@ -16,11 +16,11 @@ CREATED_AT_FIELD = 'created_at'
 ERROR_DETAIL_FIELD = 'detail'
 
 SUMMARY_DATA = {
-        ID_FIELD: 1,
-        URL_FIELD: 'http://example.com',
-        SUMMARY_FIELD: 'summary',
-        CREATED_AT_FIELD: datetime.utcnow().isoformat(),
-    }
+    ID_FIELD: 1,
+    URL_FIELD: 'http://example.com',
+    SUMMARY_FIELD: 'summary',
+    CREATED_AT_FIELD: datetime.utcnow().isoformat(),
+}
 MULTIPLE_SUMMARIES_DATA = [
     {
         ID_FIELD: 1,
@@ -33,7 +33,7 @@ MULTIPLE_SUMMARIES_DATA = [
         URL_FIELD: 'http://example.com',
         SUMMARY_FIELD: 'summary',
         CREATED_AT_FIELD: datetime.utcnow().isoformat(),
-    }
+    },
 ]
 
 
@@ -163,7 +163,7 @@ def test_read_summary_incorrect_id(test_app, summary_id, response_code, monkeypa
     ids=['non-digit ID', 'zero ID', 'Nonexistent ID'],
 )
 def test_update_summary_incorrect_id(
-        test_app, summary_id, response_code, monkeypatch
+        test_app, summary_id, response_code, monkeypatch,
 ):
     monkeypatch.setattr(crud, 'update', mock_update_nonexistent)
     response = test_app.put(

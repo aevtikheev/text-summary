@@ -18,14 +18,12 @@ async def read(id_: int) -> Optional[dict]:
 
 
 async def read_all() -> List:
-    summaries = await TextSummary.all().values()
-
-    return summaries
+    return await TextSummary.all().values()
 
 
 async def update(id_: int, payload: SummaryUpdatePayloadSchema) -> Optional[dict]:
     summary = await TextSummary.filter(id=id_).first().update(
-        url=payload.url, summary=payload.summary
+        url=payload.url, summary=payload.summary,
     )
     if summary:
         updated_summary = await TextSummary.filter(id=id_).first().values()

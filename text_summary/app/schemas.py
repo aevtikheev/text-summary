@@ -1,6 +1,5 @@
 from pydantic import BaseModel, AnyHttpUrl
 from tortoise.contrib.pydantic import pydantic_model_creator
-
 from app.models import TextSummary
 
 
@@ -9,7 +8,7 @@ class SummaryPayloadSchema(BaseModel):
 
 
 class SummaryResponseSchema(SummaryPayloadSchema):
-    id: int
+    id: int  # noqa: VNE003
 
 
 class SummaryUpdatePayloadSchema(SummaryPayloadSchema):

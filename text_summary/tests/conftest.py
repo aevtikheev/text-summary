@@ -12,7 +12,7 @@ from app.config import get_settings, Settings
 
 def pytest_configure(config):
     config.addinivalue_line(
-        'markers', 'negative: Negative tests.'
+        'markers', 'negative: Negative tests.',
     )
 
 
