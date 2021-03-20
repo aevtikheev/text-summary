@@ -1,3 +1,4 @@
+"""Module to work with summarizer database."""
 import logging
 
 from fastapi import FastAPI
@@ -11,6 +12,7 @@ logger = logging.getLogger('uvicorn')
 
 
 def init_db(app: FastAPI) -> None:
+    """Register Tortoise ORM."""
     register_tortoise(
         app=app,
         db_url=get_settings().database_url,
@@ -21,6 +23,7 @@ def init_db(app: FastAPI) -> None:
 
 
 async def generate_schema() -> None:
+    """Generate DB schemes for summarizer app."""
     logger.info('Initializing Tortoise...')
 
     await Tortoise.init(

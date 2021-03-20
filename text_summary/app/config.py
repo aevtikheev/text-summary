@@ -8,6 +8,7 @@ logger = logging.getLogger('uvicorn')
 
 
 class Settings(BaseSettings):
+    """Environment settings for web application."""
     environment: str = 'dev'
     testing: bool = False
     database_url: AnyUrl
@@ -15,6 +16,7 @@ class Settings(BaseSettings):
 
 @lru_cache()
 def get_settings() -> Settings:
+    """Load environment settings."""
     logger.info('Loading environment settings...')
     settings = Settings()
     logger.info(f'{settings.environment=} {settings.testing=} {settings.database_url=}')
