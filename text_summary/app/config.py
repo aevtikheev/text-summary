@@ -19,6 +19,6 @@ def get_settings() -> Settings:
     """Load environment settings."""
     logger.info('Loading environment settings...')
     settings = Settings()
-    logger.info(f'{settings.environment=} {settings.testing=} {settings.database_url=}')
+    logger.info(f'{settings.environment=} {settings.testing=}')
 
     return settings
