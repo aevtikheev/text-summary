@@ -52,7 +52,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Pull images
         run: |
-          docker pull ${{ env.IMAGE }}-builder:latest || true
           docker pull ${{ env.IMAGE }}-final:latest || true
       - name: Run container
         run: |
