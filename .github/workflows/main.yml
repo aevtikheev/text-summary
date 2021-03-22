@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: Continuous Integration and Delivery
 
 on: [push]
 
@@ -17,19 +17,19 @@ jobs:
         run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Pull images
+      - name: Pull image
         run: |
-          docker pull ${{ env.IMAGE }}-final:latest || true
-      - name: Build images
+          docker pull ${{ env.IMAGE }}:latest || true
+      - name: Build image
         run: |
           docker build \
-            --cache-from ${{ env.IMAGE }}-final:latest \
-            --tag ${{ env.IMAGE }}-final:latest \
+            --cache-from ${{ env.IMAGE }}:latest \
+            --tag ${{ env.IMAGE }}:latest \
             --file ./text_summary/Dockerfile.prod \
             "./text_summary"
-      - name: Push images
+      - name: Push image
         run: |
-          docker push ${{ env.IMAGE }}-final:latest
+          docker push ${{ env.IMAGE }}:latest
 
   test:
     name: Test Docker Image
@@ -42,9 +42,16 @@ jobs:
         run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Pull images
+      - name: Pull image
         run: |
-          docker pull ${{ env.IMAGE }}-final:latest || true
+          docker pull ${{ env.IMAGE }}:latest || true
+      - name: Build image
+        run: |
+          docker build \
+            --cache-from ${{ env.IMAGE }}:latest \
+            --tag ${{ env.IMAGE }}:latest \
+            --file ./text_summary/Dockerfile.prod \
+            "./text_summary"
       - name: Run container
         run: |
           docker run \
@@ -54,7 +61,7 @@ jobs:
             -e ENVIRONMENT=dev \
             -e DATABASE_TEST_URL=sqlite://sqlite.db \
             -p 5003:8765 \
-            ${{ env.IMAGE }}-final:latest
+            ${{ env.IMAGE }}:latest
       - name: Pytest
         run: docker exec text_summary python -m pytest .
       - name: Flake8
