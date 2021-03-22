@@ -12,7 +12,7 @@ CREATED_AT_FIELD = 'created_at'
 ERROR_DETAIL_FIELD = 'detail'
 
 
-def test_create_summary(test_app_with_db):
+def test_create_summary(test_app_with_db, mocked_summarizer):
     summary_url = 'http://example.com'
     response = test_app_with_db.post(
         f'{SUMMARIES_ENDPOINT}/',
