@@ -78,6 +78,6 @@ jobs:
             -p 5003:8765 \
             ${{ env.IMAGE }}-final:latest
       - name: Pytest
-        run: docker exec fastapi-tdd python -m pytest .
+        run: docker exec text_summary python -m pytest .
       - name: Flake8
-        run: docker exec fastapi-tdd python -m flake8 .
+        run: docker exec text_summary python -m flake8 .
