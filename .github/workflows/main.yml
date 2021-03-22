@@ -1,4 +1,4 @@
-name: Continuous Integration and Delivery
+name: Continuous Integration
 
 on: [push]
 
@@ -17,19 +17,27 @@ jobs:
         run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Pull image
+      - name: Pull images
         run: |
-          docker pull ${{ env.IMAGE }}:latest || true
-      - name: Build image
+          docker pull ${{ env.IMAGE }}-builder:latest || true
+          docker pull ${{ env.IMAGE }}-final:latest || true
+      - name: Build images
         run: |
           docker build \
-            --cache-from ${{ env.IMAGE }}:latest \
-            --tag ${{ env.IMAGE }}:latest \
+            --target builder \
+            --cache-from ${{ env.IMAGE }}-builder:latest \
+            --tag ${{ env.IMAGE }}-builder:latest \
             --file ./text_summary/Dockerfile.prod \
             "./text_summary"
-      - name: Push image
+          docker build \
+            --cache-from ${{ env.IMAGE }}-final:latest \
+            --tag ${{ env.IMAGE }}-final:latest \
+            --file ./text_summary/Dockerfile.prod \
+            "./text_summary"
+      - name: Push images
         run: |
-          docker push ${{ env.IMAGE }}:latest
+          docker push ${{ env.IMAGE }}-builder:latest
+          docker push ${{ env.IMAGE }}-final:latest
 
   test:
     name: Test Docker Image
@@ -42,14 +50,21 @@ jobs:
         run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Pull image
+      - name: Pull images
         run: |
-          docker pull ${{ env.IMAGE }}:latest || true
-      - name: Build image
+          docker pull ${{ env.IMAGE }}-builder:latest || true
+          docker pull ${{ env.IMAGE }}-final:latest || true
+      - name: Build images
         run: |
           docker build \
-            --cache-from ${{ env.IMAGE }}:latest \
-            --tag ${{ env.IMAGE }}:latest \
+            --target builder \
+            --cache-from ${{ env.IMAGE }}-builder:latest \
+            --tag ${{ env.IMAGE }}-builder:latest \
+            --file ./text_summary/Dockerfile.prod \
+            "./text_summary"
+          docker build \
+            --cache-from ${{ env.IMAGE }}-final:latest \
+            --tag ${{ env.IMAGE }}-final:latest \
             --file ./text_summary/Dockerfile.prod \
             "./text_summary"
       - name: Run container
@@ -61,8 +76,8 @@ jobs:
             -e ENVIRONMENT=dev \
             -e DATABASE_TEST_URL=sqlite://sqlite.db \
             -p 5003:8765 \
-            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}-final:latest
       - name: Pytest
-        run: docker exec text_summary python -m pytest .
+        run: docker exec fastapi-tdd python -m pytest .
       - name: Flake8
-        run: docker exec text_summary python -m flake8 .
+        run: docker exec fastapi-tdd python -m flake8 .
