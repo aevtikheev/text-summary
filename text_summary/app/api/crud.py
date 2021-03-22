@@ -17,7 +17,7 @@ async def read(summary_id: int) -> Optional[dict]:
     return summary[0] if summary else None
 
 
-async def read_all() -> List:
+async def read_all() -> List[dict]:
     return await TextSummary.all().values()
 
 
