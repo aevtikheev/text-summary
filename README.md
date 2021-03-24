@@ -3,7 +3,7 @@
 # Article summarization service
 This is an educational project made to play a bit with FastAPI and other stuff.
 
-Scraps an article from a web page and generate a short summary. Uses [FastAPI](https://fastapi.tiangolo.com/) as a backend and [Newspaper3k](https://newspaper.readthedocs.io/en/latest/) for scraping and NLP.
+Scraps an article from a web page and generates a short summary. Uses [FastAPI](https://fastapi.tiangolo.com/) as a backend and [Newspaper3k](https://newspaper.readthedocs.io/en/latest/) for scraping and NLP.
 
 ## Example usage
 Run the containers:
