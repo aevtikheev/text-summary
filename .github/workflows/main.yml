@@ -45,13 +45,6 @@ jobs:
       - name: Pull image
         run: |
           docker pull ${{ env.IMAGE }}:latest || true
-      - name: Build image
-        run: |
-          docker build \
-            --cache-from ${{ env.IMAGE }}:latest \
-            --tag ${{ env.IMAGE }}:latest \
-            --file ./text_summary/Dockerfile.prod \
-            "./text_summary"
       - name: Run container
         run: |
           docker run \
